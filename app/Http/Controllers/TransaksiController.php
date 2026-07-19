@@ -7,7 +7,7 @@ use App\Models\Produk;
 class TransaksiController extends Controller
 {
     public function index(){
-        $produk = Produk::all();
+        $produk = Produk::where('stok','>',0)->get();
 
         return view('transaksi.index', compact('produk'));
 
