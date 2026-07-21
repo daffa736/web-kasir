@@ -128,9 +128,10 @@ const cartTableBody = document.getElementById('cart-table-body');
 const textTotal = document.getElementById('text-total');
 const inputBayar = document.getElementById('input-bayar');
 const btnProses = document.getElementById('btn-proses');
+const textKembalian = document.getElementById('text-kembalian');
 
 btnTambah.addEventListener('click', function() {
-    produkId = selectProduk.value;
+    const produkId = selectProduk.value;
 
     if (!produkId) {
         alert('Pilihlah minimal satu produk');
@@ -146,16 +147,16 @@ btnTambah.addEventListener('click', function() {
         alert('sisa stok gacukup ');
     }
 
-    const produkSama = keranjang.find(item => item.Id === produkId);
+    const produkSama = keranjang.find(item => item.id ===  produkId);
+    if(produkSama){
+    if(produkSama.qyt + qyt > stok){
+        alert('p');
+        return;
+    }
+    produkSama.qyt += qyt;
+    produkSama.subtotal = qyt * harga;
 
-    if (produkSama) {
-        if (produkSama.qty + qty > stok) {
-            alert('qty di keranjang melebihi stok');
-        }
-        produkSama.qty += qyt;
-        produkSama.subtotal = qty * harga;
-    } else {
-        keranjang.push({
+   } else{ keranjang.push({
             id: produkId,
             produk: namaProduk,
             harga: harga,
@@ -163,17 +164,66 @@ btnTambah.addEventListener('click', function() {
             qty: qty,
             subtotal: qty * harga
         });
-
-    }
+}    
 
     inputQty.value = 1;
 
     updateKeranjang();
-})
+});
+    
+    function updateKeranjang() {
+        
+        cartTableBody.innerHTML = ' ';
+        
+        keranjang.forEach((item) => {
+            cartTableBody.innerHTML += `
+    <tr>
+        <td class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase" >
+        ${item.produk}
+        </td>
+        <td class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">
+        ${item.harga}
+        </td>
+        <td class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">
+        ${item.qty}
+        </td>
+        <td class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">
+        ${item.subtotal}
+        </td>
+        <td class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">
+        </td>
+    </tr>
+                                    `;
+        });
+    
 
-function updateKeranjang() {
+        const totalBelanja = keranjang.reduce((total , item) => total += item.subtotal , 0);
+        textTotal.innerText = `Rp ${totalBelanja.toLocaleString('id-ID')}`;
 
-}
+       
 
-console.log(keranjang);
+        inputBayar.addEventListener('input', function(event){
+
+            let uangDiterima = parseInt(event.target.value) || 0;
+            let totalBelanja =  keranjang.reduce((total , item) => total += item.subtotal , 0);
+            let kembalian = totalBelanja - uangDiterima;
+
+        if(kembalian > 0){
+            textKembalian.innerText = "uang kurang";
+            textKembalian.style.color = "red";
+        }else{
+            let positif = Math.abs(kembalian);
+            textKembalian.innerText = `${positif.toLocaleString('id-ID')}`;
+            textKembalian.style.color = "green";
+        }
+        })
+        
+
+       btnProses.addEventListener('click', function(index){
+        keranjang.splice(index,1);
+        updateKeranjang();
+    })
+    }
+
+
 </script>
