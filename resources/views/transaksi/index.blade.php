@@ -1,4 +1,14 @@
 <x-app-layout>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>Document</title>
+    </head>
+    
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Transaksi Kasir (POS)') }}
@@ -20,7 +30,7 @@
                             <!-- Dropdown Produk -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Nama Produk</label>
-                                <select id="select-produk"
+                                <select id="select-produk" aria-placeholder=""
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                     <option value="">-- Pilih Produk1 --</option>
 
@@ -74,10 +84,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="cart-table-body" class="divide-y divide-gray-200">
-                                    <tr>
-                                        <td colspan="5" class="text-center py-4 text-gray-500">Keranjang masih kosong.
-                                        </td>
-                                    </tr>
+                                   
                                 </tbody>
                             </table>
                         </div>
@@ -145,16 +152,17 @@ btnTambah.addEventListener('click', function() {
 
     if (qty > stok) {
         alert('sisa stok gacukup ');
-    }
-
-    const produkSama = keranjang.find(item => item.id ===  produkId);
-    if(produkSama){
-    if(produkSama.qyt + qyt > stok){
-        alert('p');
         return;
     }
-    produkSama.qyt += qyt;
-    produkSama.subtotal = qyt * harga;
+
+    let produkSama = keranjang.find(item => item.id ===  produkId);
+    if(produkSama){
+    if(produkSama.qty + qty > stok){
+        alert('jumlah qty di keranjang melebihi stok');
+        return;
+    }
+    produkSama.qty += qty;
+    produkSama.subtotal = produkSama.qty * produkSama.harga;
 
    } else{ keranjang.push({
             id: produkId,
@@ -170,7 +178,7 @@ btnTambah.addEventListener('click', function() {
 
     updateKeranjang();
 });
-    
+   
     function updateKeranjang() {
         
         cartTableBody.innerHTML = ' ';
@@ -190,40 +198,104 @@ btnTambah.addEventListener('click', function() {
         <td class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">
         ${item.subtotal}
         </td>
-        <td class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">
+        <td class="px-4 py-2 text-center">
+        <button type="button">Hapus</button>
         </td>
     </tr>
-                                    `;
-        });
-    
-
+    `;
+    });
+        
         const totalBelanja = keranjang.reduce((total , item) => total += item.subtotal , 0);
         textTotal.innerText = `Rp ${totalBelanja.toLocaleString('id-ID')}`;
+        hitungKembali();
+    
+        };
 
-       
+        inputBayar.addEventListener('input', hitungKembali);
 
-        inputBayar.addEventListener('input', function(event){
+        function hitungKembali(){
+            const totalBelanja =  keranjang.reduce((total , item) => total + item.subtotal , 0);
+            const uangDiterima = parseInt(inputBayar.value) || 0;
+            const kembalian = totalBelanja - uangDiterima;
+            const positif = Math.abs(kembalian);
 
-            let uangDiterima = parseInt(event.target.value) || 0;
-            let totalBelanja =  keranjang.reduce((total , item) => total += item.subtotal , 0);
-            let kembalian = totalBelanja - uangDiterima;
-
-        if(kembalian > 0){
+         if(kembalian > 0){
             textKembalian.innerText = "uang kurang";
             textKembalian.style.color = "red";
-        }else{
-            let positif = Math.abs(kembalian);
+            btnProses.disabled = true;
+            }else{
+            
             textKembalian.innerText = `${positif.toLocaleString('id-ID')}`;
             textKembalian.style.color = "green";
+            btnProses.disabled = false;
+
         }
-        })
+     };
+     
+function resetKasirTotal(index) {
+    
+    keranjang = [];
+
+    cartTableBody.innerHTML = ` <tr>
+                                        <td colspan="5" class="text-center py-4 text-gray-500">Keranjang masih kosong.
+                                        </td>
+                                    </tr>`;
+    // 2. Kosongkan dropdown produk 
+    selectProduk.value = "";
+
+    // 3. Kembalikan input jumlah beli ke angka 1
+    inputQty.value = "1";
+
+    // 4. Kosongkan input uang bayar kasir
+    inputBayar.value = "";
+
+    textKembalian.innerText = "Rp 0";
+
+    // 5. Reset teks Total Belanja dan Kembalian di layar menjadi Rp 0
+    textTotal.innerText = "Rp 0";
+    
+   
+    
+}
+
         
+       btnProses.addEventListener('click', function(){
+           const totalBelanja =  keranjang.reduce((total , item) => total + item.subtotal , 0);
+           const uangDiterima = parseInt(inputBayar.value) || 0;
+           const kembali = totalBelanja - uangDiterima;
+           const kembalian = Math.abs(kembali);
+           const dataKirim = {
+               items: keranjang,
+               total: totalBelanja,
+               bayar:uangDiterima,
+               kembali: kembalian
+            };
 
-       btnProses.addEventListener('click', function(index){
-        keranjang.splice(index,1);
-        updateKeranjang();
+            //kirim data ke laravel menggunakan fecth api
+            fetch('/transaksi/simpan',{
+                method:'POST',
+                headers:{
+                    'content-Type': 'application/json',//ngasih tau kalau mau kirim data dlm bentuk json
+                    'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').getAttribute('content')//ambil token di head buat akses ke laravel
+                },
+                body:JSON.stringify(dataKirim)//ubah dataKrim ke bentuk JSON
+            })
+            .then(response => response.json())
+            .then(ta => {
+                if(ta.success){
+                updateKeranjang();
+                resetKasirTotal();
+                }else{
+                    alert('data gagal di kirim');
+                }
+            })
+          
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjaadi keasalahan koneksi atau server');
+            })
     })
-    }
-
+ 
+    
 
 </script>

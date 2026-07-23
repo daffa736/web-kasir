@@ -46,11 +46,11 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Aksi Cepat</h3>
                 <div class="flex flex-wrap gap-4">
                     <a href="{{ route('produk.index') }}" class="inline-flex items-center px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-semibold transition shadow">
-                        📦 Kelola Stok Produk
+                        Kelola Stok Produk
                     </a>
                     <!-- Tombol ini nanti mengarah ke fitur Transaksi yang akan kita buat -->
-                    <a href="#" class="inline-flex items-center px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-semibold transition shadow">
-                        🛒 Buka Aplikasi Kasir
+                    <a href="{{ route('transaksi.index') }}" class="inline-flex items-center px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-semibold transition shadow">
+                        Buka Aplikasi Kasir
                     </a>
                 </div>
             </div>

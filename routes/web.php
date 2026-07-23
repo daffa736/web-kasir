@@ -25,7 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('produk', ProdukController::class);
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
-    Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
+    Route::post('/transaksi/simpan', [TransaksiController::class, 'store']);
+   
 });
 
 require __DIR__.'/auth.php';
