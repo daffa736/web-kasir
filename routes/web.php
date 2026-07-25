@@ -26,7 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('produk', ProdukController::class);
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::post('/transaksi/simpan', [TransaksiController::class, 'store']);
+    Route::get('/transaksi/struk/{id}', [TransaksiController::class, 'struk']);
    
 });
 
 require __DIR__.'/auth.php';
+ 

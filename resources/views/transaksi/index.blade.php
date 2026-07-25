@@ -4,6 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- // token untuk bbisa di akses oleh laravel -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Document</title>
@@ -55,7 +56,7 @@
                             <!-- Tombol Tambah -->
                             <button type="button" id="btn-tambah"
                                 class="w-full inline-flex justify-center items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest transition">
-                                Tambah ke Keranjang 🛒
+                                Tambah ke Keranjang 
                             </button>
                         </div>
                     </div>
@@ -111,7 +112,7 @@
                             <!-- Tombol Bayar Akhir -->
                             <button type="button" id="btn-proses"
                                 class="w-full inline-flex justify-center items-center px-4 py-3 bg-green-600 hover:bg-green-700 border border-transparent rounded-md font-bold text-sm text-white uppercase tracking-widest transition">
-                                PROSES TRANSAKSI (BAYAR) 💳
+                                PROSES TRANSAKSI  
                             </button>
                         </div>
 
@@ -142,6 +143,7 @@ btnTambah.addEventListener('click', function() {
 
     if (!produkId) {
         alert('Pilihlah minimal satu produk');
+        return;
     }
 
     const selectedOption = selectProduk.options[selectProduk.selectedIndex];
@@ -219,16 +221,15 @@ btnTambah.addEventListener('click', function() {
             const kembalian = totalBelanja - uangDiterima;
             const positif = Math.abs(kembalian);
 
-         if(kembalian > 0){
-            textKembalian.innerText = "uang kurang";
-            textKembalian.style.color = "red";
-            btnProses.disabled = true;
-            }else{
-            
+         
+            if(kembalian < 0){
             textKembalian.innerText = `${positif.toLocaleString('id-ID')}`;
             textKembalian.style.color = "green";
             btnProses.disabled = false;
-
+            }else{
+            textKembalian.innerText = `${positif.toLocaleString('id-ID')}`;
+            textKembalian.style.color = "red";
+            btnProses.disabled = true;
         }
      };
      
@@ -254,12 +255,17 @@ function resetKasirTotal(index) {
     // 5. Reset teks Total Belanja dan Kembalian di layar menjadi Rp 0
     textTotal.innerText = "Rp 0";
     
+    btnProses.disabled = true;
    
     
 }
 
         
        btnProses.addEventListener('click', function(){
+           if(keranjang.length === 0){
+                alert('keranjang kosong!');
+                return;
+            }
            const totalBelanja =  keranjang.reduce((total , item) => total + item.subtotal , 0);
            const uangDiterima = parseInt(inputBayar.value) || 0;
            const kembali = totalBelanja - uangDiterima;
@@ -280,9 +286,10 @@ function resetKasirTotal(index) {
                 },
                 body:JSON.stringify(dataKirim)//ubah dataKrim ke bentuk JSON
             })
-            .then(response => response.json())
-            .then(ta => {
+            .then(response => response.json())//nunggu response dari laravel
+            .then(ta => {//tampung di ta
                 if(ta.success){
+                    window.open('/transaksi/struk/' + ta.transaksi_id, '_blank');//nembak ke hal struk
                 updateKeranjang();
                 resetKasirTotal();
                 }else{
@@ -294,6 +301,7 @@ function resetKasirTotal(index) {
                 console.error('Error:', error);
                 alert('Terjaadi keasalahan koneksi atau server');
             })
+
     })
  
     

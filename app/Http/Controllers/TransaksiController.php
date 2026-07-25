@@ -18,7 +18,7 @@ class TransaksiController extends Controller
     }
 
     public function store(Request $request){
-        $request->validate([
+        $request->validate([ //validasi array
             'items' => 'required|array',
             'total' => 'required|numeric',
             'bayar' => 'required|numeric',
@@ -47,7 +47,7 @@ class TransaksiController extends Controller
 
         $produk = Produk::findOrFail($item['id']);
          if($produk->stok < $item['qty']){
-            throw new \Exception("stok produk '{$produk->nama_produk}' tidak cukup");
+            throw new \Exception("stok produk '{$produk->produk}' tidak cukup");
          }
          $produk->stok -= $item['qty'];
          $produk->save();
@@ -58,6 +58,7 @@ class TransaksiController extends Controller
         return response()->json([
             'success' => true,
             'massage' => 'data berhasil',
+              'transaksi_id' => $transaksi->id
             
         ]);
 
@@ -66,8 +67,15 @@ class TransaksiController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'gagal menyimpan' . $e->getMessage()
+                'message' => 'gagal menyimpan' . $e->getMessage(),
+              
             ], 500);
          }
+    }
+
+    public function struk($id){
+        $transaksi = Transaksi::with('detailTransaksi.produk')->findOrFail($id);
+
+        return view('transaksi.struk', compact('transaksi'));
     }
 }
