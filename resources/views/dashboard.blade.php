@@ -1,4 +1,5 @@
 <x-app-layout>
+    
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard Kasir') }}
@@ -29,14 +30,14 @@
                 <!-- Card 3: Transaksi Hari Ini -->
                 <div class="bg-white overflow-hidden shadow sm:rounded-lg p-6 border-l-4 border-green-500">
                     <div class="text-sm font-medium text-gray-500 uppercase">Transaksi Hari Ini</div>
-                    <div class="mt-2 text-3xl font-bold text-gray-900">0</div>
+                    <div class="mt-2 text-3xl font-bold text-gray-900">{{ $transaksiHariIni ?? '0'}}</div>
                     <div class="text-xs text-gray-500 mt-1">Pesanan selesai diproses</div>
                 </div>
 
                 <!-- Card 4: Pendapatan Hari Ini -->
                 <div class="bg-white overflow-hidden shadow sm:rounded-lg p-6 border-l-4 border-amber-500">
                     <div class="text-sm font-medium text-gray-500 uppercase">Pendapatan Hari Ini</div>
-                    <div class="mt-2 text-2xl font-bold text-gray-900">Rp 0</div>
+                    <div class="mt-2 text-2xl font-bold text-gray-900">Rp {{ number_format($pendapatanHariIni) ?? '0' }}</div>
                     <div class="text-xs text-gray-500 mt-1">Total omset kasir</div>
                 </div>
             </div>
@@ -55,11 +56,37 @@
                 </div>
             </div>
 
-            <!-- 3. RECENT TRANSACTIONS (TRANSAKSI TERBARU) -->
-            <div class="bg-white overflow-hidden shadow sm:rounded-lg p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Transaksi Terbaru</h3>
-                <div class="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
-                    <p class="text-sm">Belum ada transaksi yang tercatat hari ini.</p>
+       
+    <h3 class="text-lg font-bold mb-4 text-gray-800"> Transaksi Terbaru Hari ini</h3>
+    
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="border-b bg-gray-50 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    <th class="py-3 px-4">#</th>
+                    <th class="py-3 px-4">No. Nota</th>
+                    <th class="py-3 px-4">Total Harga</th>
+                    <th class="py-3 px-4">Waktu</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 text-sm">
+                @forelse($transaksiTerbaru as $item)
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-medium text-gray-900">{{ $loop->iteration }}</td>
+                        <td class="py-3 px-4 font-mono text-gray-600">{{ $item->kode_transaksi }}</td>
+                        <td class="py-3 px-4 font-semibold text-green-600">Rp {{ number_format($item->total_harga, 0, ',', '.') }}</td>
+                        <td class="py-3 px-4 text-gray-500">{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="py-4 text-center text-gray-500">Belum ada transaksi hari ini.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
                 </div>
             </div>
 

@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Produk;
-
+use App\Models\Transaksi;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,7 +16,11 @@ Route::get('/dashboard', function () {
 
     $stokMenipis = Produk::where('stok', '<', 5)->count();
 
-    return view('dashboard',compact('totalProduk','stokMenipis'));
+    $transaksiHariIni = Transaksi::whereDate('created_at',now()->today())->count();
+    $pendapatanHariIni = Transaksi::whereDate('created_at',now()->today())->sum('total_harga');
+    $transaksiTerbaru = Transaksi::whereDate('created_at', now()->today())->latest()->take(5)->get();
+
+    return view('dashboard',compact('totalProduk','stokMenipis','transaksiHariIni','pendapatanHariIni','transaksiTerbaru'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -27,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::post('/transaksi/simpan', [TransaksiController::class, 'store']);
     Route::get('/transaksi/struk/{id}', [TransaksiController::class, 'struk']);
+    Route::get('/transaksi/riwayat', [TransaksiController::class, 'riwayat']);
    
 });
 

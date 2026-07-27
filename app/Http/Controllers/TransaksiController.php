@@ -78,4 +78,10 @@ class TransaksiController extends Controller
 
         return view('transaksi.struk', compact('transaksi'));
     }
+
+    public function riwayat(){
+        $transaksi = Transaksi::latest()->paginate(10);
+
+        return view('transaksi.riwayat', compact('transaksi'));
+    }
 }

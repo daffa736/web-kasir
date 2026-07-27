@@ -146,8 +146,8 @@
 
     <!-- TOMBOL AKSI (Hanya muncul di layar, sembunyi pas diprint) -->
     <div class="btn-container no-print">
-        <button class="btn" onclick="window.print()">🖨️ Cetak Lagi</button>
-        <button class="btn" onclick="window.close()">❌ Tutup</button>
+        <button class="btn" onclick="window.print()"> Cetak Lagi</button>
+        <button class="btn" onclick="window.close()"> Tutup</button>
     </div>
 
 </body>
