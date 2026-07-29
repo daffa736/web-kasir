@@ -11,6 +11,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::middleware(['auth'])->group(function () {
 Route::get('/dashboard', function () {
     $totalProduk = Produk::count();
 
@@ -21,13 +22,11 @@ Route::get('/dashboard', function () {
     $transaksiTerbaru = Transaksi::whereDate('created_at', now()->today())->latest()->take(5)->get();
 
     return view('dashboard',compact('totalProduk','stokMenipis','transaksiHariIni','pendapatanHariIni','transaksiTerbaru'));
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
 
-Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('produk', ProdukController::class);
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::post('/transaksi/simpan', [TransaksiController::class, 'store']);
     Route::get('/transaksi/struk/{id}', [TransaksiController::class, 'struk']);
@@ -35,5 +34,10 @@ Route::middleware('auth')->group(function () {
    
 });
 
+Route::middleware(['auth', 'role:admin'])->group(function(){
+    Route::resource('produk', ProdukController::class);
+     
+});
+
 require __DIR__.'/auth.php';
- 
+  

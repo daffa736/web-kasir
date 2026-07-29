@@ -80,8 +80,7 @@
                                             Qty</th>
                                         <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">
                                             Subtotal</th>
-                                        <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">
-                                            Aksi</th>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody id="cart-table-body" class="divide-y divide-gray-200">
@@ -200,9 +199,7 @@ btnTambah.addEventListener('click', function() {
         <td class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">
         ${item.subtotal}
         </td>
-        <td class="px-4 py-2 text-center">
-        <button type="button">Hapus</button>
-        </td>
+       
     </tr>
     `;
     });

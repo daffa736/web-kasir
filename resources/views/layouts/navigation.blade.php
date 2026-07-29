@@ -27,10 +27,12 @@
                         {{ __('Riwayat Transaksi') }}
                     </x-nav-link>
 
+                    @if(Auth::user()->role === 'admin')
                     <!-- Link Data Produk -->
                     <x-nav-link :href="url('/produk')" :active="request()->is('produk*')">
                         {{ __('Data Produk') }}
                     </x-nav-link>
+                    @endif
                 </div>
             </div>
 
