@@ -16,7 +16,7 @@ class ProdukController extends Controller
     }
     public function store(Request $request){
          $request->validate([
-            'produk' => 'required|string|max:200',
+            'produk' => 'required|regex:/^[a-zA-Z\s]+$/|max:200',
             'harga' => 'required|integer',
             'stok' => 'required|integer'
         ]);
