@@ -46,9 +46,7 @@ class TransaksiController extends Controller
         }
 
         $produk = Produk::findOrFail($item['id']);
-         if($produk->stok < $item['qty']){
-            throw new \Exception("stok produk '{$produk->produk}' tidak cukup");
-         }
+        
          $produk->stok -= $item['qty'];
          $produk->save();
        

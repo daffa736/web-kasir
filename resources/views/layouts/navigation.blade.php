@@ -6,17 +6,14 @@
                 <!-- Logo / Nama App -->
                 <div class="shrink-0 flex items-center fw-bold fs-5">
                     <a href="{{ route('dashboard') }}" class="font-bold text-lg text-gray-800">
-                         Kasir App
+                        <img src="{{ asset('images/logo.jpg') }}" class="h-20 w-auto mx-auto">
+                        
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <!-- Link Dashboard
-                    <x-nav-link :href="url('/dashboard')" :active="request()->is('dashboard*')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link> -->
-
+                 
                     <!-- Link Transaksi Baru -->
                     <x-nav-link :href="url('/transaksi')" :active="request()->is('transaksi') && !request()->is('transaksi/riwayat*')">
                         {{ __('Kasir') }}
