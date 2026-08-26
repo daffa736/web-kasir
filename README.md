@@ -35,8 +35,9 @@ Cara menjalankan Project
 
 1. Clone Repository
 bash
+  ```
 git clone https://github.com/daffa736/web-kasir.git
-
+```
 2. Masuk ke Folder
 bash
 cd web-kasir
