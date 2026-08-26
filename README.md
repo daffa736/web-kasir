@@ -35,30 +35,40 @@ Cara menjalankan Project
 
 1. Clone Repository
 bash
+```
 git clone https://github.com/daffa736/web-kasir.git
-
-2. Masuk ke Folder
+```
+3. Masuk ke Folder
 bash
+```
 cd web-kasir
+```
 
-3. Install dependency
-bash 
+5. Install dependency
+bash
+```
 composer install
+```
 
-4. salin file environment 
-bash 
+7. salin file environment 
+bash
+```
 cp .env.example .env
- 
-5. Generate application key
+ ```
+9. Generate application key
 bash
+```
 php artisan key:generate
-
-6. atur konfigurasi pada file .env
-7. jalankan migrate
-bash 
+```
+11. atur konfigurasi pada file .env
+12. jalankan migrate
+```
 php artisan migrate
+```
 
-8. jalankan serve
-bash
+14. jalankan serve
+
+```
 php artisan serve
+```
 
