@@ -71,4 +71,5 @@ php artisan migrate
 ```
 php artisan serve
 ```
+APLIKASI INI MASIH DALAM TAHAP PENGEMBANGAN
 
