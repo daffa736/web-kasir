@@ -1,18 +1,20 @@
-
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Struk Pembayaran</title>
-    <style>
+    <!-- <style>
         /* Setup Dasar Kertas Kasir (58mm) */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
-            font-family: 'Courier New', Courier, monospace; /* Font struk klasik */
+            font-family: 'Courier New', Courier, monospace;
+            /* Font struk klasik */
             width: 58mm;
             padding: 8px;
             margin: 0 auto;
@@ -22,10 +24,18 @@
         }
 
         /* Utility Class */
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .bold { font-weight: bold; }
-        
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
         /* Garis Pemisah Putus-Putus Khas Struk */
         .line {
             border-bottom: 1px dashed #000;
@@ -37,6 +47,7 @@
             width: 100%;
             border-collapse: collapse;
         }
+
         td {
             vertical-align: top;
             padding: 2px 0;
@@ -47,6 +58,7 @@
             .no-print {
                 display: none !important;
             }
+
             body {
                 width: 100%;
                 padding: 0;
@@ -60,6 +72,7 @@
             gap: 5px;
             justify-content: center;
         }
+
         .btn {
             padding: 5px 10px;
             font-size: 10px;
@@ -69,19 +82,21 @@
             font-family: sans-serif;
             border-radius: 3px;
         }
+
         .btn:hover {
             background: #ccc;
         }
-    </style>
+    </style> -->
 </head>
 <!-- Otomatis buka pop-up Print saat halaman selesai loading -->
+
 <body onload="window.print()">
- 
+
     <!-- HEADER TOKO -->
     <div class="text-center">
-        <h4 style="font-size: 14px; text-transform: uppercase;">TOKO DUT</h4>
-        <p>Jl. Jendral Sudirman No. 12</p>
-        <p>Telp: 0812-3456-7890</p>
+        <h4 style="font-size: 14px; text-transform: uppercase;">KEDAI ABI</h4>
+        <p>Jl. Kanu Sae</p>
+        <p>Telp: 085*********</p>
     </div>
 
     <div class="line"></div>
@@ -105,16 +120,16 @@
     <!-- DAFTAR BARANG -->
     <table>
         @foreach($transaksi->detailTransaksi as $detail)
-            <!-- Baris 1: Nama Produk -->
-            <tr>
-                <td colspan="3" class="bold">{{ $detail->produk->produk }}</td>
-            </tr>
-            <!-- Baris 2: Qty x Harga & Subtotal -->
-            <tr>
-                <td style="width: 45%;">{{ $detail->qty }} x {{ number_format($detail->produk->harga) }}</td>
-                <td style="width: 5%;"></td>
-                <td class="text-right" style="width: 50%;">{{ number_format($detail->subtotal) }}</td>
-            </tr>
+        <!-- Baris 1: Nama Produk -->
+        <tr>
+            <td colspan="3" class="bold">{{ $detail->produk->produk }}</td>
+        </tr>
+        <!-- Baris 2: Qty x Harga & Subtotal -->
+        <tr>
+            <td style="width: 45%;">{{ $detail->qty }} x {{ number_format($detail->produk->harga) }}</td>
+            <td style="width: 5%;"></td>
+            <td class="text-right" style="width: 50%;">{{ number_format($detail->subtotal) }}</td>
+        </tr>
         @endforeach
     </table>
 
@@ -151,4 +166,5 @@
     </div>
 
 </body>
+
 </html>

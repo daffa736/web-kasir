@@ -6,14 +6,14 @@
                 <!-- Logo / Nama App -->
                 <div class="shrink-0 flex items-center fw-bold fs-5">
                     <a href="{{ route('dashboard') }}" class="font-bold text-lg text-gray-800">
-                        <img src="{{ asset('images/logo.jpg') }}" class="h-20 w-auto mx-auto">
-                        
+                        <img src="{{ asset('images/logo.png') }}" class="h-20 w-auto mx-auto">
+
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                 
+
                     <!-- Link Transaksi Baru -->
                     <x-nav-link :href="url('/transaksi')" :active="request()->is('transaksi') && !request()->is('transaksi/riwayat*')">
                         {{ __('Kasir') }}
@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-             <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -49,14 +49,14 @@
                     </x-slot>
 
                     <x-slot name="content">
-                      
+
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();"
-                                    class="text-red-600 font-semibold">
+                                class="text-red-600 font-semibold">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
