@@ -24,8 +24,13 @@ Route::get('/dashboard', function () {
     return view('dashboard',compact('totalProduk','stokMenipis','transaksiHariIni','pendapatanHariIni','transaksiTerbaru'));
 })->name('dashboard');
 
-    Route::resource('profile', ProfileController::class);
-    Route::resource('transaksi', TransaksiController::class);
+      Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+    Route::post('/transaksi/simpan', [TransaksiController::class, 'store']);
+    Route::get('/transaksi/struk/{id}', [TransaksiController::class, 'struk']);
+    Route::get('/transaksi/riwayat', [TransaksiController::class, 'riwayat']);
    
 });
 
