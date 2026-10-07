@@ -11,8 +11,8 @@
     </head>
     
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Transaksi Kasir (POS)') }}
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight ml-64">
+            {{ __('Transaksi Kasir ') }}
         </h2>
     </x-slot>
 
@@ -25,7 +25,7 @@
                 <!-- KOLOM KIRI: PILIH PRODUK -->
                 <div class="lg:col-span-1">
                     <div class="p-6 bg-white shadow sm:rounded-lg">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4 font-bold">Pilih Produk</h3>
+                        <h3 class="text-lg text-gray-900 mb-4 font-bold">Pilih Produk</h3>
 
                         <div class="space-y-4">
                             <!-- Dropdown Produk -->
@@ -65,7 +65,7 @@
                 <!-- KOLOM KANAN: TABEL KERANJANG & PEMBAYARAN -->
                 <div class="lg:col-span-2">
                     <div class="p-6 bg-white shadow sm:rounded-lg">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4 font-bold">Keranjang Belanja</h3>
+                        <h3 class="text-lg  text-gray-900 mb-4 font-bold">Keranjang Belanja</h3>
 
                         <!-- Tabel List Belanjaan -->
                         <div class="overflow-x-auto">
@@ -259,6 +259,7 @@ function resetKasirTotal(index) {
 
         
        btnProses.addEventListener('click', function(){
+      
            if(keranjang.length === 0){
                 alert('keranjang kosong!');
                 return;
