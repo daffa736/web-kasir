@@ -25,6 +25,7 @@ class TransaksiController extends Controller
             'kembali' => 'required|numeric',
         ]);
 
+        //menyimpan bnyk data sekaligus
         DB::beginTransaction();
 
         try{
@@ -51,6 +52,7 @@ class TransaksiController extends Controller
          $produk->save();
        
 
+         //masukan ke dtabse jika semunya lolos
         DB::commit();
 
         return response()->json([
