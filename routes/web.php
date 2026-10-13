@@ -29,7 +29,7 @@ Route::get('/dashboard', function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::post('/transaksi/simpan', [TransaksiController::class, 'store']);
-    Route::get('/transaksi/struk/{id}', [TransaksiController::class, 'struk']);
+    Route::get('/transaksi/struk/{id}', [TransaksiController::class, 'struk'])->name('transaksi.struk');
     Route::get('/transaksi/riwayat', [TransaksiController::class, 'riwayat']);
    
 });

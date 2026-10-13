@@ -13,6 +13,11 @@
 
                 <!-- Navigation Links -->
                 <div class="flex flex-col space-y-4 border-">
+                    
+                    <!-- Link Transaksi Baru -->
+                    <x-nav-link  :href="url('/dashboard')" :active="request()->is('dashboard') && !request()->is('dashboard/riwayat*')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
 
                     <!-- Link Transaksi Baru -->
                     <x-nav-link  :href="url('/transaksi')" :active="request()->is('transaksi') && !request()->is('transaksi/riwayat*')">
